@@ -8,18 +8,32 @@ Master-Project SecScan
 | WiSe/SoSe 2022/23
 
 .. list-table:: Autor
-    :widths: 10 10 30 5
+    :widths: 10 10 30 5 5
     :header-rows: 1
 
     * - Vorname
       - Nachname
       - Kontakt
+      - Studiengang
       - Semester
+
+    * - Lisa
+      - de Rijke
+      - lisa@de-rijke.de
+      - MIN
+      - 01
+
+    * - Thomas
+      - Bucher
+      - Thomas.Bucher1@Hs-Augsburg.de
+      - MIN
+      - 01
 
     * - Jonas
       - Winkler
-      - Jonas.Winkler@Hs-Augsburg.de
-      - 06
+      - Jonas.Winkler1@Hs-Augsburg.de
+      - MIN
+      - 01
 
 .. image:: _static/img/cc-logo.jpg
    :scale: 30%
