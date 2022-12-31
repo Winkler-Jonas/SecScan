@@ -1,17 +1,21 @@
 FROM python:3.10.9-bullseye
-MAINTAINER Jonas.Winkler
 
-COPY ./secscan /secscan
+ENV VIRTUAL_ENV=/opt/venv
+RUN python3 -m venv $VIRTUAL_ENV
+ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
-WORKDIR /secscan
-
-RUN pip install -r requirements/base.txt
-
+COPY ./secScan /app
 COPY ./docker/secscan/entrypoint.sh /entrypoint.sh
 
-RUN chmod +x /entrypoint.sh
+RUN set -ex \
+    && apt-get update
 
-RUN set -x \
-    && apt-get update -y \
+RUN pip install -r /app/requirements/base.txt
+
+WORKDIR /app
+
+EXPOSE 8010
+
+RUN chmod +x /entrypoint.sh
 
 ENTRYPOINT ["/entrypoint.sh"]
