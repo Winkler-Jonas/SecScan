@@ -128,19 +128,18 @@ def define_docker_container() -> str:
 
 
 if __name__ == '__main__':
-    setup_conda_env()
-    # try:
-    #     verify_docker_install()
-    #     verify_conda_install()
-    #     setup_conda_env()
-    #     setup_django_env()
-    #     setup_docker()
-    #     print('Install finished!')
-    #     c_print('To setup user and database, follow steps...')
-    #     print(f'1. docker exec -it {define_docker_container()}_sec_scan_1 bash')
-    #     print('2. ./runserver.sh')
-    #     print('3. Enter credentials and collect static files')
-    #     c_print('Connect to Server at http://localhost:8020/api/v1')
-    # except CommandException as e:
-    #     print(e.msg)
-    #     exit(e.errno)
+    try:
+        verify_docker_install()
+        verify_conda_install()
+        setup_conda_env()
+        setup_django_env()
+        setup_docker()
+        print('Install finished!')
+        c_print('To setup user and database, follow steps...')
+        print(f'1. docker exec -it {define_docker_container()}_sec_scan_1 bash')
+        print('2. ./runserver.sh')
+        print('3. Enter credentials and collect static files')
+        c_print('Connect to Server at http://localhost:8020/api/v1')
+    except CommandException as e:
+        print(e.msg)
+        exit(e.errno)
