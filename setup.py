@@ -1,3 +1,4 @@
+import re
 from pathlib import Path
 from subprocess import Popen, PIPE, run
 from dataclasses import dataclass, field
@@ -7,6 +8,7 @@ from os import linesep
 
 c_print: Callable[[str], None] = lambda content: print("\u001B[31m" + content + "\u001B[0m")
 
+CONTAINER_NAME = re.compile(r"(?P<container_name>\w*)_sec_scan_1", re.DOTALL)
 
 # -------------------------------------Exceptions_------------------------------------------
 class CommandException(Exception):
@@ -119,9 +121,15 @@ def setup_docker() -> None:
     run_command(['docker-compose', 'up', '--build', '-d'])
 
 
+def define_docker_container() -> str:
+    docker_ps: POutput = run_command(['docker', 'ps'])
+    if match := CONTAINER_NAME.search(docker_ps.stdout):
+        return match.group('container_name')
+    else:
+        raise CommandException('Unexpected Error occurred, Docker container was not found!?!?')
+
+
 if __name__ == '__main__':
-    # result = run_command(['conda', 'info', '--envs'])
-    # print(result.stdout)
     try:
         verify_docker_install()
         verify_conda_install()
@@ -133,7 +141,7 @@ if __name__ == '__main__':
         exit(e.errno)
     print('Install finished!')
     c_print('To setup user and database, follow steps...')
-    print('1. docker exec -it masterproject_sec_scan_1 bash')
+    print(f'1. docker exec -it {define_docker_container()}_sec_scan_1 bash')
     print('2. ./runserver.sh')
     print('3. Enter credentials and collect static files')
     c_print('Connect to Server at http://localhost:8020/api/v1')
