@@ -8,6 +8,7 @@ from os import linesep
 
 c_print: Callable[[str], None] = lambda content: print("\u001B[31m" + content + "\u001B[0m")
 
+REQUIREMENTS: str = 'proj_conda_requirements.txt'
 CONTAINER_NAME = re.compile(r"(?P<container_name>\w*)_sec_scan_1", re.DOTALL)
 
 # -------------------------------------Exceptions_------------------------------------------
@@ -90,14 +91,11 @@ def verify_python_install() -> None:
 
 def setup_conda_env() -> None:
     env_name: str = 'masterProject'
-    package_list: List[str] = [
-        'conda install -c conda-forge django=4.1 -y',
-        'conda install -c conda-forge django-cors-headers=3.13 -y',
-        'conda install -c conda-forge django-environ=0.4.5 -y',
-        'conda install -c conda-forge djangorestframework=3.14 -y',
-        'conda install -c conda-forge gunicorn=20.1.0 -y',
-        'conda install -c anaconda psycopg2=2.9.3 -y',
-    ]
+    package_list: List[str] = []
+    with Path(Path().absolute() / REQUIREMENTS).open('r', encoding='utf-8') as file:
+        for line in (l for l in file if '#' not in l and l):
+            package_list.append(line.strip()) if line[0:5] == 'conda' else None
+
     run_command(['conda', 'create', '--name', env_name, 'python=3.10', '-y'])
     for command in package_list:
         print(f'Installing -> {command.split()[-2]}')
@@ -126,7 +124,7 @@ def define_docker_container() -> str:
     if match := CONTAINER_NAME.search(docker_ps.stdout):
         return match.group('container_name')
     else:
-        raise CommandException('Unexpected Error occurred, Docker container was not found!?!?')
+        raise CommandException(-3, 'Unexpected Error occurred, Docker container was not found!?!?')
 
 
 if __name__ == '__main__':
@@ -136,12 +134,12 @@ if __name__ == '__main__':
         setup_conda_env()
         setup_django_env()
         setup_docker()
+        print('Install finished!')
+        c_print('To setup user and database, follow steps...')
+        print(f'1. docker exec -it {define_docker_container()}_sec_scan_1 bash')
+        print('2. ./runserver.sh')
+        print('3. Enter credentials and collect static files')
+        c_print('Connect to Server at http://localhost:8020/api/v1')
     except CommandException as e:
         print(e.msg)
         exit(e.errno)
-    print('Install finished!')
-    c_print('To setup user and database, follow steps...')
-    print(f'1. docker exec -it {define_docker_container()}_sec_scan_1 bash')
-    print('2. ./runserver.sh')
-    print('3. Enter credentials and collect static files')
-    c_print('Connect to Server at http://localhost:8020/api/v1')

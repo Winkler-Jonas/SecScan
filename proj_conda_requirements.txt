@@ -1,0 +1,9 @@
+# Please make sure the environment installs with specified versions before adding additional packages
+# If something has to be down-/upgraded please do so in this file too.
+
+conda install -c conda-forge django=4.1 -y
+conda install -c conda-forge django-cors-headers=3.13 -y
+conda install -c conda-forge django-environ=0.4.5 -y
+conda install -c conda-forge djangorestframework=3.14 -y
+conda install -c conda-forge gunicorn=20.1.0 -y
+conda install -c anaconda psycopg2=2.9.3 -y
