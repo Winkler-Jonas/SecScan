@@ -10,7 +10,7 @@ COPY ./docker/secscan/entrypoint.sh /entrypoint.sh
 RUN set -ex \
     && apt-get update
 
-RUN pip install -r /app/requirements/base.txt
+RUN pip install -r /app/requirements/requirements-pip.txt
 
 WORKDIR /app
 

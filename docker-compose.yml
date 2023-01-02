@@ -26,7 +26,7 @@ services:
       - media_content:/media_content
       ports:
       - "8085:8085"
-      command: gunicorn -w 4 sec_scan.wsgi -b 0.0.0.0:8010
+      command: gunicorn -w 4 secScan.wsgi -b 0.0.0.0:8010
   nginx:
       # image: library/nginx:latest
       build:
