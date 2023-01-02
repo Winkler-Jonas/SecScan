@@ -1,0 +1,39 @@
+version: "3"
+volumes:
+  pgdata:
+  static_files:
+  media_content:
+services:
+  postgre_db:
+    image: library/postgres:latest
+    environment:
+      POSTGRES_DB: secscan-db
+      POSTGRES_USER: jonas
+      POSTGRES_PASSWORD: password
+    volumes:
+      - pgdata:/var/utils/posgresql/data
+    ports:
+      - 5432:5432
+  sec_scan:
+      # image: library/python:3.10.9-bullseye
+      build:
+        context: .
+        dockerfile: docker/secscan/Dockerfile
+      restart: always
+      volumes:
+      - ./secScan:/secScan
+      - static_files:/static_files
+      - media_content:/media_content
+      ports:
+      - "8085:8085"
+      command: gunicorn -w 4 secScan.wsgi -b 0.0.0.0:8010
+  nginx:
+      # image: library/nginx:latest
+      build:
+        context: .
+        dockerfile: docker/nginx/Dockerfile
+      volumes:
+        - static_files:/static_files
+        - media_content:/media_content
+      ports:
+        - "8020:8020"
