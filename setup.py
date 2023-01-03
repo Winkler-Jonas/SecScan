@@ -1,4 +1,5 @@
 import re
+import subprocess
 from pathlib import Path
 from subprocess import Popen, PIPE, run
 from dataclasses import dataclass, field
@@ -143,3 +144,4 @@ if __name__ == '__main__':
     except CommandException as e:
         print(e.msg)
         exit(e.errno)
+    subprocess.call(['sh', './file.sh'])
