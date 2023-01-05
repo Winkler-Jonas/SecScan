@@ -10,7 +10,7 @@ from os import linesep
 c_print: Callable[[str], None] = lambda content: print("\u001B[31m" + content + "\u001B[0m")
 
 REQUIREMENTS: str = 'proj_conda_requirements.txt'
-CONTAINER_NAME = re.compile(r"(?P<container_name>\w*)_sec_scan_1", re.DOTALL)
+CONTAINER_NAME = re.compile(r"(?P<container_name>\w*)-sec_scan_1", re.DOTALL)
 
 # -------------------------------------Exceptions_------------------------------------------
 class CommandException(Exception):
@@ -144,4 +144,3 @@ if __name__ == '__main__':
     except CommandException as e:
         print(e.msg)
         exit(e.errno)
-    subprocess.call(['sh', './file.sh'])
