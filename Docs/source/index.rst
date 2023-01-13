@@ -19,7 +19,7 @@ Master-Project SecScan
 
     * - Lisa
       - de Rijke
-      - lisa@de-rijke.de
+      - lisa.de.rijke@hs-augsburg.de
       - MIN
       - 01
 
